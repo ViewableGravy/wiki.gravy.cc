@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { conditional } from "../helpers";
+import { appendFile } from "node:fs/promises";
 
 const parser = z.object({
   path: z.string(),
@@ -26,8 +27,23 @@ export const makeRoute = async (req: Request) => {
 
         return data;
       })
-      .then(({ path, file }) => {
-        Bun.write(`${__dirname}/public/${path}`, file, { createPath: true });
+      .then(async ({ path, file }) => {
+        const directory = `${__dirname}/../public/${path}`
+
+        const logDir = Bun.env.NODE_ENV === 'production' ? '/var/log' : `${__dirname}/..`;
+        const logFile = Bun.file(`${logDir}/bun.log`);
+        const fileExists = Bun.file(directory);
+
+        if (!await logFile.exists()) {
+          console.log(`creating: ${directory}\n`)
+          await Bun.write(`${logDir}/bun.log`, `creating: ${directory}\n`, { createPath: true });
+        } else {
+          console.log(`${await fileExists.exists() ? 'updating' : 'creating'}: ${directory}\n`)
+          await appendFile(`${logDir}/bun.log`, `${await fileExists.exists() ? 'updating' : 'creating'}: ${directory}\n`);
+        }
+        
+        await Bun.write(directory, file, { createPath: true });
+
         return new Response("Success", { status: 200 });
       })
       .catch((error) => new Response(error.message, { status: 400 }));
