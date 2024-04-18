@@ -12,7 +12,7 @@ export const makeRoute = async (req: Request) => {
     const result = await parser
       .parseAsync(await req.json())
       .then(conditional({
-        condition: ({ password }) => password === "12345",
+        condition: ({ password }) => password === Bun.env.PASSWORD,
         error: "Invalid Password\n"
       }))
       .then(conditional({
