@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  wiki:
+    container_name: wiki.gravy.cc
+    build:
+      context: . 
+      dockerfile: Dockerfile
+    environment:
+      - PASSWORD=d149f91b1aa7f9462835487a
+    ports:
+      - "3008:3000"
+    volumes:
+      - ./volume:/usr/src/app/public
+
+# volumes:
+#   app:

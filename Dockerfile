@@ -31,6 +31,11 @@ FROM base AS release
 COPY --from=install /temp/prod/node_modules node_modules
 COPY --from=prerelease /usr/src/app/src .
 COPY --from=prerelease /usr/src/app/package.json .
+# COPY --chown=1000:1000 . .
+
+USER root
+RUN chown -R bun:bun /usr
+RUN chmod -R 777 /usr
 
 # run the app
 USER bun

@@ -28,12 +28,14 @@ export const makeRoute = async (req: Request) => {
         return data;
       })
       .then(async ({ path, file }) => {
+        console.log('here')
         const directory = `${__dirname}/../public/${path}`
 
-        const logDir = Bun.env.NODE_ENV === 'production' ? '/var/log' : `${__dirname}/..`;
+        const logDir = Bun.env.NODE_ENV === 'production' ? '/usr/src/app' : `${__dirname}/..`;
         const logFile = Bun.file(`${logDir}/bun.log`);
         const fileExists = Bun.file(directory);
 
+        console.log('there')
         if (!await logFile.exists()) {
           console.log(`creating: ${directory}\n`)
           await Bun.write(`${logDir}/bun.log`, `creating: ${directory}\n`, { createPath: true });
@@ -41,12 +43,17 @@ export const makeRoute = async (req: Request) => {
           console.log(`${await fileExists.exists() ? 'updating' : 'creating'}: ${directory}\n`)
           await appendFile(`${logDir}/bun.log`, `${await fileExists.exists() ? 'updating' : 'creating'}: ${directory}\n`);
         }
-        
-        await Bun.write(directory, file, { createPath: true });
 
+
+        const result = await Bun.write(directory, file, { createPath: true });
+        
+        console.log('result')
+        
         return new Response("Success", { status: 200 });
       })
-      .catch((error) => new Response(error.message, { status: 400 }));
+      .catch((error) => {
+        return new Response(error, { status: 400 })
+      });
 
     return result;
   } catch (error) {
@@ -56,4 +63,6 @@ export const makeRoute = async (req: Request) => {
 
     return new Response("Something went wrong\n", { status: 500 });
   }
+
+  return new Response("Bun!\n");
 }
