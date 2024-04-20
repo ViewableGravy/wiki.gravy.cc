@@ -3,6 +3,7 @@ import { makeRoute } from './routes/make';
 import { fetchRoute } from './routes/fetch';
 
 Bun.serve({
+  port: 3008,
   async fetch(req) {
     const url = new URL(req.url);
 
