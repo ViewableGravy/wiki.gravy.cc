@@ -9,6 +9,10 @@ const parsePath = (path: string) => {
     return { path: 'index.html' };
   }
 
+  if (!/\..+$/.test(path)) {
+    return { path: `${_path}.html` };
+  }
+
   if (!/\.(html|css|js)$/.test(_path)) {
     return { path: 'index.html' };
   }
@@ -23,7 +27,11 @@ export const fetchRoute = async (req: Request) => {
     return new Response("Invalid Path", { status: 400 });
   }
 
-  const fileName = `${baseServingRoute}/${parsePath(url.pathname).path}`
+  const { path } = parsePath(url.pathname);
+
+  console.log(path)
+
+  const fileName = `${baseServingRoute}/${path}`
   const file = Bun.file(fileName);
   
   if (await file.exists()) {
@@ -36,10 +44,8 @@ export const fetchRoute = async (req: Request) => {
     return Response.redirect("/wiki/404.html", 302)
   }
 
-  const { stdout } = Bun.spawn(["/bin/bash", url.pathname])
+  const { stdout } = Bun.spawn(["/bin/bash", "createWikiPage", "--slug", url.pathname])
   logger('[fetching]', url.pathname)
-
-  console.log(stdout);
 
   return new Response(`
     <html>
