@@ -12,4 +12,7 @@ To run:
 bun run src/index.ts
 ```
 
-This project was created using `bun init` in bun v1.0.23. [Bun](https://bun.sh) is a fast all-in-one JavaScript runtime.
+Note: If this crashes for some reason (ie, computer restarts), this can be restarted by running `bun dev &` and then `disown {process id}` which will run the command as a background process and detach it from the terminal session.
+
+Further investigation may be necessary to investigate why running `sudo systemctl start wiki` causes the application to crash
+(/lib/systemd/system/wiki.service)

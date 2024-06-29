@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { conditional, logger } from "../helpers";
+import { readdir } from 'node:fs/promises'
+import { baseServingRoute } from "./fetch";
 
 const parser = z.object({
   path: z.string(),
@@ -31,6 +33,30 @@ export const makeRoute = async (req: Request) => {
 
         await logger('[creating]', directory);
         await Bun.write(directory, file, { createPath: true });
+
+        await fetch('https://discord.com/api/webhooks/1231615680608997516/2z96ZhDmu_udPpHISAMDwapJQMeO0hFW5lHUvKjCAq5QB0QB73TmpLwAJZk-ViA5CXWC', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            content: `New file created at ${path}`
+          })
+        })
+
+        const totalFiles = (await readdir(`${baseServingRoute}/wiki`)).length;
+
+        if (totalFiles % 1000 === 0) {
+          await fetch('https://discord.com/api/webhooks/1231615680608997516/2z96ZhDmu_udPpHISAMDwapJQMeO0hFW5lHUvKjCAq5QB0QB73TmpLwAJZk-ViA5CXWC', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              content: `@here We have reached ${totalFiles} files`
+            })
+          })
+        }
         
         return new Response("Success\n", { status: 200 });
       })

@@ -1,0 +1,75 @@
+{
+  "bottom": [
+    [
+      {
+        "tagName": "div",
+        "classes": "side-box side-box-right plainlinks sistersitebox"
+      },
+      {
+        "tagName": "div",
+        "classes": "tocright"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      }
+    ],
+    [
+      {
+        "tagName": "h2"
+      },
+      {
+        "tagName": "ul"
+      },
+      {
+        "tagName": "div",
+        "id": "disambigbox",
+        "classes": "metadata plainlinks dmbox dmbox-disambig"
+      }
+    ]
+  ]
+}
